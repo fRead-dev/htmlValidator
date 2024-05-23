@@ -1,9 +1,8 @@
 package htmlValidator
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/tdewolff/parse/v2"
-	"github.com/tdewolff/parse/v2/html"
 	"math/rand"
 	"strings"
 	"testing"
@@ -242,68 +241,9 @@ func TestHtml(t *testing.T) {
 		"<img src=''/>"
 
 	// Создаем новый парсер для парсинга HTML
-	parser := html.NewLexer(parse.NewInput(strings.NewReader(text)))
+	parser := strings.NewReader(text)
 
-	textBuf := ""
-
-	errorTags := map[string]uint16{}
-	errorTags = make(map[string]uint16)
-
-	waitParagraph := false
-
-	for {
-		typeToken, data := parser.Next()
-
-		switch typeToken {
-		case html.StartTagCloseToken, html.StartTagVoidToken:
-			continue
-
-		case html.AttributeToken:
-			if waitParagraph { //обрабатываем только ожидающие атрибуты
-				key, isValid := isValidParagraphAttribute(parser.AttrKey())
-
-				if isValid {
-					textBuf += "<" + TagParagraph + " " + key + ">"
-				} else {
-					textBuf += "<" + TagParagraph + ">"
-				}
-
-				waitParagraph = false
-			}
-			t.Log("ATTRIBUTE", string(parser.AttrKey()), string(parser.AttrVal()))
-
-		case html.StartTagToken:
-			tag, isValid, isParagraph := IsValidTag(parser.AttrKey())
-			if isValid { //если тег валиден
-				if !isParagraph { //и если это не параграф
-					textBuf += "<" + tag + ">"
-
-				} else { //если таки параграф
-					waitParagraph = true
-				}
-
-			} else { // Обрабатываем ошибку с неизвестным тегом
-				errorTags[tag] += 1
-			}
-
-		case html.EndTagToken:
-			waitParagraph = false
-			tag, isValid, _ := IsValidTag(parser.AttrKey())
-			if isValid { //если тег валиден
-				textBuf += "</" + tag + ">"
-			}
-
-		case html.TextToken:
-			waitParagraph = false
-			textBuf += string(data)
-
-		case html.ErrorToken:
-			t.Log(textBuf)
-			t.Log(errorTags)
-			return
-
-		default:
-			t.Log("DEF", typeToken, string(data))
-		}
-	}
+	valid := Validate(parser)
+	json, _ := json.Marshal(valid)
+	t.Log(string(json))
 }
