@@ -46,6 +46,35 @@ func TestMap(t *testing.T) {
 
 }
 
+func TestTextTransform(t *testing.T) {
+
+	transformObj := TextTransform()
+	transformObj.AddParagraph("{p}", "{:p}")
+	transformObj.AddDelimiter("< ==== >")
+
+	transformObj.AddTagItalic("[IT:]", "[:IT]")
+
+	oldText := "" +
+		"<p>простой абзац</p>" +
+		"<p left=\"\">лево</p>" +
+		"<p right=''>право</p>" +
+		"<p center>центр</p>" +
+		"<hr/>" +
+		"<hr>" +
+		"<b>жирный</b>" +
+		"<i>наклонный</i>" +
+		"<u>подчеркнутый</u>" +
+		"<s>зачеркнутый</s>" +
+		"<q>цитата</q>" +
+		"<sub>в низ мелкий текст</sub>" +
+		"<sup>в верх мелкий текст</sup>" +
+		"<div>косячный блок</div>" +
+		"<img src=''/>"
+	newText := transformObj.Transform(strings.NewReader(oldText))
+
+	t.Log(newText)
+}
+
 func TestHtml(t *testing.T) {
 
 	text := "" +
