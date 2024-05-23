@@ -49,30 +49,30 @@ func TestMap(t *testing.T) {
 func TestTextTransform(t *testing.T) {
 
 	transformObj := TextTransform()
-	transformObj.AddParagraph("{p}", "{:p}")
+	transformObj.AddParagraph("{p:}", "{:p}")
 	transformObj.AddDelimiter("< ==== >")
 
 	transformObj.AddTagItalic("[IT:]", "[:IT]")
 
 	oldText := "" +
-		"<p>простой абзац</p>" +
-		"<p left=\"\">лево</p>" +
-		"<p right=''>право</p>" +
-		"<p center>центр</p>" +
-		"<hr/>" +
-		"<hr>" +
-		"<b>жирный</b>" +
-		"<i>наклонный</i>" +
-		"<u>подчеркнутый</u>" +
-		"<s>зачеркнутый</s>" +
-		"<q>цитата</q>" +
-		"<sub>в низ мелкий текст</sub>" +
-		"<sup>в верх мелкий текст</sup>" +
-		"<div>косячный блок</div>" +
-		"<img src=''/>"
+		"<p>простой абзац</p>\n" +
+		"<p left=\"\">лево</p>\n" +
+		"<p right=''>право</p>\n" +
+		"<p center>центр</p>\n" +
+		"<hr/>\n" +
+		"<hr>\n" +
+		"<b>жирный</b>\n" +
+		"<i>наклонный</i>\n" +
+		"<u>подчеркнутый</u>\n" +
+		"<s>зачеркнутый</s>\n" +
+		"<q>цитата</q>\n" +
+		"<sub>в низ мелкий текст</sub>\n" +
+		"<sup>в верх мелкий текст</sup>\n" +
+		"<div>косячный блок</div>\n" +
+		"<img src=''/>\n"
 	newText := transformObj.Transform(strings.NewReader(oldText))
 
-	t.Log(newText)
+	fmt.Println(newText)
 }
 
 func TestHtml(t *testing.T) {

@@ -217,11 +217,59 @@ func (obj *TextTransformObj) tagReplace(data []byte, isBegin bool) (tag string, 
 	return "", false, pNone
 }
 
+func (obj *TextTransformObj) paragraphReplace(key []byte) (isParagraph paragraphType) {
+	attr := string(key)
+
+	switch attr {
+	case AttrLeft:
+		return pLeft
+	case AttrRight:
+		return pRight
+	case AttrCenter:
+		return pCenter
+	}
+
+	return pDef
+}
+
+func (obj *TextTransformObj) paragraphPrint(types paragraphType, isBegin bool) string {
+	switch types {
+	case pDef:
+		if isBegin {
+			return obj.replaceTagParagraph.def.begin
+		} else {
+			return obj.replaceTagParagraph.def.end
+		}
+
+	case pLeft:
+		if isBegin {
+			return obj.replaceTagParagraph.replaceLeft.begin
+		} else {
+			return obj.replaceTagParagraph.replaceLeft.end
+		}
+
+	case pRight:
+		if isBegin {
+			return obj.replaceTagParagraph.replaceRight.begin
+		} else {
+			return obj.replaceTagParagraph.replaceRight.end
+		}
+
+	case pCenter:
+		if isBegin {
+			return obj.replaceTagParagraph.replaceCenter.begin
+		} else {
+			return obj.replaceTagParagraph.replaceCenter.end
+		}
+	}
+
+	return ""
+}
+
 /* Трансормация входного html-текста согласно параметрам */
 func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
 	parser := html.NewLexer(parse.NewInput(htmlText))
-
-	waitParagraph := pNone
+	var waitParagraph paragraphType = pNone
 
 	for {
 		typeToken, data := parser.Next()
@@ -232,15 +280,8 @@ func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
 
 		case html.AttributeToken:
 			if waitParagraph != pNone { //обрабатываем только ожидающие атрибуты
-				key, isValid := isValidParagraphAttribute(parser.AttrKey())
-
-				if isValid {
-					retText += "<" + TagParagraph + " " + key + ">"
-				} else {
-					retText += "<" + TagParagraph + ">"
-				}
-
-				waitParagraph = pNone
+				waitParagraph = obj.paragraphReplace(parser.AttrKey())
+				retText += obj.paragraphPrint(waitParagraph, true)
 			}
 
 		case html.StartTagToken:
@@ -262,7 +303,7 @@ func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
 					retText += tag //и если это не параграф
 				} else {
 					if waitParagraph != pWait {
-						retText += "<END TAG>"
+						retText += obj.paragraphPrint(waitParagraph, false)
 						waitParagraph = pNone
 					}
 				}

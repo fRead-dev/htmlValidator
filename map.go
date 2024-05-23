@@ -1,7 +1,11 @@
 package htmlValidator
 
 const (
-	TagParagraph string = "p"  //	Абзац
+	TagParagraph string = "p" //	Абзац
+	AttrLeft     string = "left"
+	AttrRight    string = "right"
+	AttrCenter   string = "center"
+
 	TagDelimiter string = "hr" //	Горизонтальная линия разделения
 
 	TagBold        string = "b"   //	Жирный
@@ -33,7 +37,7 @@ func isValidParagraphAttribute(key []byte) (attr string, isValid bool) {
 	attr = string(key)
 
 	switch attr {
-	case "left", "right", "center":
+	case AttrLeft, AttrRight, AttrCenter:
 		return attr, true
 	}
 
