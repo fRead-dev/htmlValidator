@@ -2,6 +2,7 @@ package htmlValidator
 
 import (
 	"io"
+	"strings"
 )
 
 /* Приведение html-текста к "стандартному" виду */
@@ -30,4 +31,26 @@ func Standardization(htmlText io.Reader) string {
 func Text(htmlText io.Reader) string {
 	transformObj := TextTransform()
 	return transformObj.Transform(htmlText)
+}
+
+/* Возрашвет только текст и БЫСТРО */
+func TextFast(htmlText io.Reader) string {
+	buf := new(strings.Builder)
+	io.Copy(buf, htmlText)
+
+	input := buf.String()
+	output := make([]rune, 0, len(input))
+	inTag := false
+
+	for _, char := range input {
+		if char == '<' {
+			inTag = true
+		} else if char == '>' {
+			inTag = false
+		} else if !inTag {
+			output = append(output, char)
+		}
+	}
+
+	return string(output)
 }

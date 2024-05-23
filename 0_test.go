@@ -220,3 +220,17 @@ func TestTextTransform(t *testing.T) {
 		}
 	})
 }
+
+func BenchmarkText(b *testing.B) {
+	htmlStr := strings.NewReader(strings.Repeat("<html><body><h1>Hello, World!</h1><p>This is a test.</p></body></html>", 1000))
+	for i := 0; i < b.N; i++ {
+		Text(htmlStr)
+	}
+}
+
+func BenchmarkTextFast(b *testing.B) {
+	htmlStr := strings.NewReader(strings.Repeat("<html><body><h1>Hello, World!</h1><p>This is a test.</p></body></html>", 1000))
+	for i := 0; i < b.N; i++ {
+		TextFast(htmlStr)
+	}
+}
