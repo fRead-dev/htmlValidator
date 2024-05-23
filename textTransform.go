@@ -234,7 +234,7 @@ func (obj *TextTransformObj) paragraphReplace(key []byte) (isParagraph paragraph
 
 func (obj *TextTransformObj) paragraphPrint(types paragraphType, isBegin bool) string {
 	switch types {
-	case pDef:
+	case pDef, pWait:
 		if isBegin {
 			return obj.replaceTagParagraph.def.begin
 		} else {
@@ -302,16 +302,16 @@ func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
 				if isParagraph == pNone {
 					retText += tag //и если это не параграф
 				} else {
-					if waitParagraph != pWait {
-						retText += obj.paragraphPrint(waitParagraph, false)
-						waitParagraph = pNone
-					}
+					retText += obj.paragraphPrint(waitParagraph, false)
+					waitParagraph = pNone
 				}
 
 			}
 
 		case html.TextToken:
-			waitParagraph = pNone
+			if waitParagraph == pWait {
+				retText += obj.paragraphPrint(waitParagraph, true)
+			}
 			retText += string(data)
 
 		case html.ErrorToken:

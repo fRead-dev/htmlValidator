@@ -49,9 +49,10 @@ func TestMap(t *testing.T) {
 func TestTextTransform(t *testing.T) {
 
 	transformObj := TextTransform()
-	transformObj.AddParagraph("{p:}", "{:p}")
-	transformObj.AddDelimiter("< ==== >")
+	//transformObj.AddParagraph("{p:}", "{:p}")
+	transformObj.AddParagraphLeft("{p left:}", "{:p left}")
 
+	transformObj.AddDelimiter("< ==== >")
 	transformObj.AddTagItalic("[IT:]", "[:IT]")
 
 	oldText := "" +
