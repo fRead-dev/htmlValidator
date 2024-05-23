@@ -1,7 +1,6 @@
 package htmlValidator
 
 import (
-	"encoding/json"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -219,31 +218,4 @@ func TestTextTransform(t *testing.T) {
 			printError(t, "Invalid tag ["+TagSuperScript+"]")
 		}
 	})
-}
-
-func TestHtml(t *testing.T) {
-
-	text := "" +
-		"<p>простой абзац</p>" +
-		"<p left=\"\">лево</p>" +
-		"<p right=''>право</p>" +
-		"<p center>центр</p>" +
-		"<hr/>" +
-		"<hr>" +
-		"<b>жирный</b>" +
-		"<i>наклонный</i>" +
-		"<u>подчеркнутый</u>" +
-		"<s>зачеркнутый</s>" +
-		"<q>цитата</q>" +
-		"<sub>в низ мелкий текст</sub>" +
-		"<sup>в верх мелкий текст</sup>" +
-		"<div>косячный блок</div>" +
-		"<img src=''/>"
-
-	// Создаем новый парсер для парсинга HTML
-	parser := strings.NewReader(text)
-
-	valid := Validate(parser)
-	json, _ := json.Marshal(valid)
-	t.Log(string(json))
 }
