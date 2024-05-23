@@ -1,11 +1,50 @@
 package htmlValidator
 
 import (
+	"fmt"
 	"github.com/tdewolff/parse/v2"
 	"github.com/tdewolff/parse/v2/html"
 	"strings"
 	"testing"
 )
+
+func printError(t *testing.T, text string) {
+	t.Error(fmt.Errorf("%s", text))
+}
+func printFatal(t *testing.T, text string, err error) {
+	t.Fatalf(text, err)
+}
+
+//###################################################################//
+
+func TestMap(t *testing.T) {
+	type StructObj struct {
+		tag         string
+		isTag       bool
+		isParagraph bool
+	}
+	dict := map[string]StructObj{
+		"ValidParagraph": {TagParagraph, true, true},
+		"ValidTag":       {TagDelimiter, true, false},
+		"InvalidTag":     {"div", false, false},
+	}
+
+	for key, obj := range dict {
+		t.Run(key, func(t *testing.T) {
+			tag, valid, paragraph := IsValidTag([]byte(obj.tag))
+			if tag != obj.tag {
+				printError(t, "Invalid Paragraph stringify")
+			}
+			if valid != obj.isTag {
+				printError(t, "Invalid switch tag")
+			}
+			if paragraph != obj.isParagraph {
+				printError(t, "Invalid switch paragraph")
+			}
+		})
+	}
+
+}
 
 func TestHtml(t *testing.T) {
 
