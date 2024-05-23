@@ -151,6 +151,7 @@ func (obj *TextTransformObj) AddTagSuperScript(begin string, end string) *TextTr
 
 //###################################################################//
 
+// валидация и подмена тега
 func (obj *TextTransformObj) tagReplace(data []byte, isBegin bool) (tag string, isValid bool, isParagraph paragraphType) {
 	nameTag := string(data)
 
@@ -217,6 +218,7 @@ func (obj *TextTransformObj) tagReplace(data []byte, isBegin bool) (tag string, 
 	return "", false, pNone
 }
 
+// валидация параграфа
 func (obj *TextTransformObj) paragraphReplace(key []byte) (isParagraph paragraphType) {
 	attr := string(key)
 
@@ -232,6 +234,7 @@ func (obj *TextTransformObj) paragraphReplace(key []byte) (isParagraph paragraph
 	return pDef
 }
 
+// подмена параграфа
 func (obj *TextTransformObj) paragraphPrint(types paragraphType, isBegin bool) string {
 	switch types {
 	case pDef, pWait:
@@ -265,6 +268,8 @@ func (obj *TextTransformObj) paragraphPrint(types paragraphType, isBegin bool) s
 
 	return ""
 }
+
+//.//
 
 /* Трансормация входного html-текста согласно параметрам */
 func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
@@ -309,7 +314,7 @@ func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
 			}
 
 		case html.TextToken:
-			if waitParagraph == pWait {
+			if waitParagraph == pWait { //если параграф поймало но без типов
 				retText += obj.paragraphPrint(waitParagraph, true)
 			}
 			retText += string(data)

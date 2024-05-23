@@ -47,33 +47,75 @@ func TestMap(t *testing.T) {
 }
 
 func TestTextTransform(t *testing.T) {
-
 	transformObj := TextTransform()
-	//transformObj.AddParagraph("{p:}", "{:p}")
-	transformObj.AddParagraphLeft("{p left:}", "{:p left}")
+	newText := ""
+	oldText := ""
 
-	transformObj.AddDelimiter("< ==== >")
-	transformObj.AddTagItalic("[IT:]", "[:IT]")
+	//		Горизонтальная линия разделения
+	t.Run("TagDelimiter", func(t *testing.T) {
 
-	oldText := "" +
-		"<p>простой абзац</p>\n" +
-		"<p left=\"\">лево</p>\n" +
-		"<p right=''>право</p>\n" +
-		"<p center>центр</p>\n" +
-		"<hr/>\n" +
-		"<hr>\n" +
-		"<b>жирный</b>\n" +
-		"<i>наклонный</i>\n" +
-		"<u>подчеркнутый</u>\n" +
-		"<s>зачеркнутый</s>\n" +
-		"<q>цитата</q>\n" +
-		"<sub>в низ мелкий текст</sub>\n" +
-		"<sup>в верх мелкий текст</sup>\n" +
-		"<div>косячный блок</div>\n" +
-		"<img src=''/>\n"
-	newText := transformObj.Transform(strings.NewReader(oldText))
+	})
 
-	fmt.Println(newText)
+	//		Абзац
+	t.Run("TagParagraph", func(t *testing.T) {
+
+	})
+
+	//	 "left"
+	t.Run("AttrLeft", func(t *testing.T) {
+
+	})
+
+	// "right"
+	t.Run("AttrRight", func(t *testing.T) {
+
+	})
+
+	//	 "center"
+	t.Run("AttrCenter", func(t *testing.T) {
+
+	})
+
+	//		Жирный
+	t.Run("TagBold", func(t *testing.T) {
+
+	})
+
+	//		Курсив
+	t.Run("TagItalic", func(t *testing.T) {
+
+	})
+
+	//		Подчеркнутый текст
+	t.Run("TagUnderline", func(t *testing.T) {
+
+	})
+
+	//		Зачеркнутый текст
+	t.Run("TagLineThrough", func(t *testing.T) {
+
+	})
+
+	//		Цитата
+	t.Run("TagQuote", func(t *testing.T) {
+
+	})
+
+	//	 Мелкий текст внизу
+	t.Run("TagSubScript", func(t *testing.T) {
+
+	})
+
+	//		Мелкий текст вверху (степени)
+	t.Run("TagSuperScript", func(t *testing.T) {
+		transformObj = TextTransform()
+		transformObj.AddTagSubScript("{s:}", "{:s}")
+		oldText = "<" + TagSuperScript + ">XX</" + TagSuperScript + ">"
+		newText = transformObj.Transform(strings.NewReader(oldText))
+		if newText != "{s:}XX{:s}" {
+			printError(t, "Invalid tag ["+TagSuperScript+"]")
+		}
+	})
 }
 
 func TestHtml(t *testing.T) {
