@@ -10,6 +10,7 @@ import (
 
 func printError(t *testing.T, text string) {
 	t.Error(fmt.Errorf("%s", text))
+	t.Fail()
 }
 func printFatal(t *testing.T, text string, err error) {
 	t.Fatalf(text, err)
