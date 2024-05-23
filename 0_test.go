@@ -11,8 +11,8 @@ func TestHtml(t *testing.T) {
 
 	text := "" +
 		"<p>простой абзац</p>" +
-		"<p left>лево</p>" +
-		"<p right>право</p>" +
+		"<p left=\"\">лево</p>" +
+		"<p right=''>право</p>" +
 		"<p center>центр</p>" +
 		"<hr/>" +
 		"<hr>" +
@@ -34,8 +34,11 @@ func TestHtml(t *testing.T) {
 		typeToken, data := parser.Next()
 
 		switch typeToken {
-		case html.StartTagCloseToken:
+		case html.StartTagCloseToken, html.StartTagVoidToken:
 			continue
+
+		case html.AttributeToken:
+			t.Log("ATTRIBUTE", string(parser.AttrKey()), string(parser.AttrVal()))
 
 		case html.StartTagToken:
 			t.Log("START", string(data), string(parser.AttrKey()), string(parser.AttrVal()))
