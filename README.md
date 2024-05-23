@@ -1,5 +1,14 @@
-# htmlValidator
+![Fork GitHub Release](https://img.shields.io/github/v/release/fRead-dev/htmlValidator)
+![Tests](https://github.com/fRead-dev/htmlValidator/actions/workflows/go-test.yml/badge.svg)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/fRead-dev/TimeRules)](https://goreportcard.com/report/github.com/fRead-dev/htmlValidator)
+
+![GitHub repo file or directory count](https://img.shields.io/github/directory-file-count/fRead-dev/htmlValidator?color=orange)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/fRead-dev/htmlValidator?color=green)
+![GitHub repo size](https://img.shields.io/github/repo-size/fRead-dev/htmlValidator)
+
+
+# htmlValidator
 
 1. Абзац
     - def `<p>`
