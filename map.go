@@ -1,29 +1,41 @@
 package htmlValidator
 
-type TAG string
-
 const (
-	TagParagraph TAG = "p"  //	Абзац
-	TagDelimiter TAG = "hr" //	Горизонтальная линия разделения
+	TagParagraph string = "p"  //	Абзац
+	TagDelimiter string = "hr" //	Горизонтальная линия разделения
 
-	TagBold        TAG = "b"   //	Жирный
-	TagItalic      TAG = "i"   //	Курсив
-	TagUnderline   TAG = "u"   //	Подчеркнутый текст
-	TagLineThrough TAG = "s"   //	Зачеркнутый текст
-	TagQuote       TAG = "q"   //	Цитата
-	TagSubScript   TAG = "sub" // Мелкий текст внизу
-	TagSuperScript TAG = "sup" //	Мелкий текст вверху (степени)
+	TagBold        string = "b"   //	Жирный
+	TagItalic      string = "i"   //	Курсив
+	TagUnderline   string = "u"   //	Подчеркнутый текст
+	TagLineThrough string = "s"   //	Зачеркнутый текст
+	TagQuote       string = "q"   //	Цитата
+	TagSubScript   string = "sub" // Мелкий текст внизу
+	TagSuperScript string = "sup" //	Мелкий текст вверху (степени)
 )
 
 /* Метод что проверяет допустимый ли это для разметки тег */
-func IsValidTag(data []byte) (isValid bool, isParagraph bool) {
-	switch TAG(data) {
+func IsValidTag(data []byte) (tag string, isValid bool, isParagraph bool) {
+	tag = string(data)
+
+	switch tag {
 	case TagParagraph:
-		return true, true
+		return tag, true, true
 
 	case TagDelimiter, TagBold, TagItalic, TagUnderline, TagLineThrough, TagQuote, TagSubScript, TagSuperScript:
-		return true, false
+		return tag, true, false
 	}
 
-	return false, false
+	return tag, false, false
+}
+
+/* Метод, что проверяет допустимый ли атрибут параграфа */
+func isValidParagraphAttribute(key []byte) (attr string, isValid bool) {
+	attr = string(key)
+
+	switch attr {
+	case "left", "right", "center":
+		return attr, true
+	}
+
+	return attr, false
 }

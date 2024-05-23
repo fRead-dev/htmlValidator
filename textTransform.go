@@ -1,5 +1,11 @@
 package htmlValidator
 
+import (
+	"github.com/tdewolff/parse/v2"
+	"github.com/tdewolff/parse/v2/html"
+	"io"
+)
+
 type TagTransformObj struct {
 	Begin string // Замена открывающего тега
 	End   string // Замена закрывающего тега
@@ -132,3 +138,26 @@ func (obj *TextTransformObj) AddTagSuperScript(begin string, end string) *TextTr
 }
 
 //###################################################################//
+
+/* Трансормация входного html-текста согласно параметрам */
+func (obj *TextTransformObj) Transform(htmlText io.Reader) (retText string) {
+	parser := html.NewLexer(parse.NewInput(htmlText))
+
+	for {
+		typeToken, data := parser.Next()
+
+		switch typeToken {
+		case html.StartTagCloseToken, html.StartTagVoidToken:
+			continue
+
+		case html.TextToken:
+			retText += string(data)
+
+		case html.ErrorToken:
+			return retText
+
+		default:
+			continue
+		}
+	}
+}
