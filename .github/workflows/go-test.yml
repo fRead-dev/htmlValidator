@@ -12,6 +12,7 @@ on:
       - 'build-ver'
       - 'major-ver'
       - 'minor-ver'
+      - 'const.go'
 
 jobs:
 
