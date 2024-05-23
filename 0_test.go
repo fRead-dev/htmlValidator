@@ -68,10 +68,12 @@ func TestTextTransform(t *testing.T) {
 	//		Горизонтальная линия разделения
 	t.Run("TagDelimiter", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddDelimiter("{:s:}")
 		oldText = "<" + TagDelimiter + ">XX</" + TagDelimiter + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
-		if newText != "{s:}XX{:s}" {
+		if newText != "{:s:}XX{:s:}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagDelimiter+"]")
 		}
 	})
@@ -79,10 +81,12 @@ func TestTextTransform(t *testing.T) {
 	//		Абзац
 	t.Run("TagParagraph", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddParagraph("{s:}", "{:s}")
 		oldText = "<" + TagParagraph + ">XX</" + TagParagraph + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagParagraph+"]")
 		}
 	})
@@ -90,43 +94,51 @@ func TestTextTransform(t *testing.T) {
 	//	 "left"
 	t.Run("AttrLeft", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
-		oldText = "<" + TagSuperScript + " " + AttrLeft + ">XX</" + TagSuperScript + " " + AttrLeft + ">"
+		transformObj.AddParagraphLeft("{s:}", "{:s}")
+		oldText = "<" + TagParagraph + " " + AttrLeft + ">XX</" + TagParagraph + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
-			printError(t, "Invalid tag ["+TagSuperScript+" "+AttrLeft+"]")
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
+			printError(t, "Invalid tag ["+TagParagraph+" "+AttrLeft+"]")
 		}
 	})
 
 	// "right"
 	t.Run("AttrRight", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
-		oldText = "<" + TagSuperScript + " " + AttrRight + ">XX</" + TagSuperScript + " " + AttrRight + ">"
+		transformObj.AddParagraphRight("{s:}", "{:s}")
+		oldText = "<" + TagParagraph + " " + AttrRight + ">XX</" + TagParagraph + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
-			printError(t, "Invalid tag ["+TagSuperScript+" "+AttrRight+"]")
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
+			printError(t, "Invalid tag ["+TagParagraph+" "+AttrRight+"]")
 		}
 	})
 
 	//	 "center"
 	t.Run("AttrCenter", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
-		oldText = "<" + TagSuperScript + " " + AttrCenter + ">XX</" + TagSuperScript + " " + AttrCenter + ">"
+		transformObj.AddParagraphCenter("{s:}", "{:s}")
+		oldText = "<" + TagParagraph + " " + AttrCenter + ">XX</" + TagParagraph + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
-			printError(t, "Invalid tag ["+TagSuperScript+" "+AttrCenter+"]")
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
+			printError(t, "Invalid tag ["+TagParagraph+" "+AttrCenter+"]")
 		}
 	})
 
 	//		Жирный
 	t.Run("TagBold", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddTagBold("{s:}", "{:s}")
 		oldText = "<" + TagBold + ">XX</" + TagBold + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagBold+"]")
 		}
 	})
@@ -134,10 +146,12 @@ func TestTextTransform(t *testing.T) {
 	//		Курсив
 	t.Run("TagItalic", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddTagItalic("{s:}", "{:s}")
 		oldText = "<" + TagItalic + ">XX</" + TagItalic + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagItalic+"]")
 		}
 	})
@@ -145,10 +159,12 @@ func TestTextTransform(t *testing.T) {
 	//		Подчеркнутый текст
 	t.Run("TagUnderline", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddTagUnderline("{s:}", "{:s}")
 		oldText = "<" + TagUnderline + ">XX</" + TagUnderline + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagUnderline+"]")
 		}
 	})
@@ -156,10 +172,12 @@ func TestTextTransform(t *testing.T) {
 	//		Зачеркнутый текст
 	t.Run("TagLineThrough", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddTagLineThrough("{s:}", "{:s}")
 		oldText = "<" + TagLineThrough + ">XX</" + TagLineThrough + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagLineThrough+"]")
 		}
 	})
@@ -167,10 +185,12 @@ func TestTextTransform(t *testing.T) {
 	//		Цитата
 	t.Run("TagQuote", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddTagQuote("{s:}", "{:s}")
 		oldText = "<" + TagQuote + ">XX</" + TagQuote + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagQuote+"]")
 		}
 	})
@@ -182,6 +202,8 @@ func TestTextTransform(t *testing.T) {
 		oldText = "<" + TagSubScript + ">XX</" + TagSubScript + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagSubScript+"]")
 		}
 	})
@@ -189,10 +211,12 @@ func TestTextTransform(t *testing.T) {
 	//		Мелкий текст вверху (степени)
 	t.Run("TagSuperScript", func(t *testing.T) {
 		transformObj = TextTransform()
-		transformObj.AddTagSubScript("{s:}", "{:s}")
+		transformObj.AddTagSuperScript("{s:}", "{:s}")
 		oldText = "<" + TagSuperScript + ">XX</" + TagSuperScript + ">"
 		newText = transformObj.Transform(strings.NewReader(oldText))
 		if newText != "{s:}XX{:s}" {
+			t.Log("NEW", newText)
+			t.Log("OLD", oldText)
 			printError(t, "Invalid tag ["+TagSuperScript+"]")
 		}
 	})
